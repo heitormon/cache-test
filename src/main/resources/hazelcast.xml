@@ -1,0 +1,39 @@
+<hazelcast xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.hazelcast.com/schema/config
+                               http://www.hazelcast.com/schema/config/hazelcast-config-5.1.xsd"
+           xmlns="http://www.hazelcast.com/schema/config">
+    <map name="com.nobu.dev.cachetest.Fruit">
+        <near-cache name="myDataStructure">
+            <in-memory-format>BINARY</in-memory-format>
+            <time-to-live-seconds>1</time-to-live-seconds>
+            <max-idle-seconds>1</max-idle-seconds>
+            <eviction eviction-policy="LRU"
+                      max-size-policy= "ENTRY_COUNT"
+                      size="1000"/>
+            <cache-local-entries>true</cache-local-entries>
+        </near-cache>
+    </map>
+    <map name="default">
+        <time-to-live-seconds>1</time-to-live-seconds>
+        <max-idle-seconds>1</max-idle-seconds>
+        <eviction size="1000" max-size-policy="PER_NODE" eviction-policy="LRU"/>
+    </map>
+    <cluster-name>teste-config</cluster-name>
+    <network>
+        <port auto-increment="true">5701</port>
+        <join>
+<!--            <multicast enabled="true">-->
+<!--                <multicast-group>224.0.0.1</multicast-group>-->
+<!--                <multicast-port>54327</multicast-port>-->
+<!--                <multicast-time-to-live>32</multicast-time-to-live>-->
+<!--                <multicast-timeout-seconds>2</multicast-timeout-seconds>-->
+<!--            </multicast>-->
+            <tcp-ip enabled="true">
+                <member-list>
+                    <member>127.0.0.1:5701</member>
+                    <member>127.0.0.1:5702</member>
+                    <member>127.0.0.1:5703</member>
+                </member-list>
+            </tcp-ip>
+        </join>
+    </network>
+</hazelcast>
