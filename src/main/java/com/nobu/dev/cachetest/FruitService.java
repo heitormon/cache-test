@@ -13,12 +13,29 @@ public class FruitService {
 
     @Transactional
     public void addFruit(Fruit fruit) {
-        // Add fruit to database
+        fruitRepository.save(fruit);
+    }
+
+    @Transactional
+    public void changeOrigin(Long id, String newOrigin) {
+        Fruit fruit = fruitRepository.findById(id).orElseThrow();
+        fruit.changeOrigin(newOrigin);
         fruitRepository.save(fruit);
     }
 
 
     public Fruit findById(Long id) {
         return fruitRepository.findById(id).get();
+    }
+
+    public void changeOriginDelay(Long id, String newOrigin) {
+        Fruit fruit = fruitRepository.findById(id).orElseThrow();
+        fruit.changeOrigin(newOrigin);
+        try {
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        fruitRepository.save(fruit);
     }
 }
